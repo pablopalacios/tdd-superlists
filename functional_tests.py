@@ -18,7 +18,6 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn('To-Do', self.browser.title)
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('To-Do', header_text)
-        self.fail('Finished the test')
 
         # Ela é convidada a inserir, de maneira intuitiva,  
         # uma nova tarefa.
@@ -36,10 +35,11 @@ class NewVisitorTest(unittest.TestCase):
         # "1: comprar feijão" (primeiro item da lista)
         inputbox.send_keys(Keys.ENTER)
 
-        table = self.browser.find_element_by_('id_list_table')
+        table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
         self.assertTrue(
-            any(row.text == '1: Comprar feijão' for row in rows)
+            any(row.text == '1: Comprar feijão' for row in rows),
+            "New to-do item did not appear in table"
         )
         
         # Ainda há uma caixa de texto convidando-a para adicionar
