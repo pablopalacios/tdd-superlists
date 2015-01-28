@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 import unittest
 
 class NewVisitorTest(unittest.TestCase):
@@ -15,19 +16,35 @@ class NewVisitorTest(unittest.TestCase):
         # Ela nota que o título da página e o cabeçalho
         # citam to-do lists
         self.assertIn('To-Do', self.browser.title)
+        header_text = self.browser.find_element_by_tag_name('h1').text
+        self.assertIn('To-Do', header_text)
         self.fail('Finished the test')
 
         # Ela é convidada a inserir, de maneira intuitiva,  
         # uma nova tarefa.
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertEqual(
+            inputbox.get_attribute('placeholder'),
+            'Enter a to-do item'
+        )
 
         # Ela digita "Comprar feijão" em uma caixa de texto
+        inputbox.send_keys('Comprar feijão')
 
         # Quando ela aperta Enter, a página é atualizada, e agora,
         # A lista aparece da seguinte forma:
         # "1: comprar feijão" (primeiro item da lista)
+        inputbox.send_keys(Keys.ENTER)
+
+        table = self.browser.find_element_by_('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertTrue(
+            any(row.text == '1: Comprar feijão' for row in rows)
+        )
         
         # Ainda há uma caixa de texto convidando-a para adicionar
         # outro item. Ela insere "Cozinhar o feijão"
+        self.fail('Finish the test!')
 
         # A página atualiza novamente, e agora mostra os dois 
         # items em sua lista
