@@ -34,24 +34,28 @@ class NewVisitorTest(unittest.TestCase):
         # A lista aparece da seguinte forma:
         # "1: comprar feijão" (primeiro item da lista)
         inputbox.send_keys(Keys.ENTER)
-
+        
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(
-            any(row.text == '1: Comprar feijão' for row in rows),
-            "New to-do item did not appear in table"
-        )
+        self.assertIn('1: Comprar feijão', [row.text for row in rows])
         
         # Ainda há uma caixa de texto convidando-a para adicionar
         # outro item. Ela insere "Cozinhar o feijão"
-        self.fail('Finish the test!')
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('Cozinhar o feijão')
+        inputbox.send_keys(Keys.ENTER)
 
         # A página atualiza novamente, e agora mostra os dois 
         # items em sua lista
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn('1: Comprar feijão', [row.text for row in rows])
+        self.assertIn('2: Cozinhar o feijão', [row.text for row in rows])
 
         # Maria pensa como o site irá lembrar da sua lista. Aí,
         # ela vê que o site criou uma URL única para ela -- há
         # algum texto explicativo para isso.
+        self.fail('Finish the test!')
 
 
         # Ela vista a URL - sua lista de tarefas ainda está lá.
