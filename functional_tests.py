@@ -5,7 +5,7 @@ class NewVisitorTest(unittest.TestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
-        self.browser.implicity_wait(3)
+        self.browser.implicitly_wait(3)
 
     def test_can_start_a_list_and_retrive_it_later(self):
         # Maria ouviu falar sobre um app de listas bacana.
@@ -14,7 +14,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # Ela nota que o título da página e o cabeçalho
         # citam to-do lists
-        self.assertIn('To-Do', browser.title)
+        self.assertIn('To-Do', self.browser.title)
         self.fail('Finished the test')
 
         # Ela é convidada a inserir, de maneira intuitiva,  
