@@ -39,6 +39,8 @@ class NewVisitorTest(LiveServerTestCase):
         # A lista aparece da seguinte forma:
         # "1: comprar feijão" (primeiro item da lista)
         inputbox.send_keys(Keys.ENTER)
+        maria_list_url = self.browser.current_url
+        self.assertRegex(maria_list_url, '/lists/.+')
         self.check_for_row_in_list_table('1: Comprar feijão')
         
         # Ainda há uma caixa de texto convidando-a para adicionar
@@ -52,14 +54,38 @@ class NewVisitorTest(LiveServerTestCase):
         self.check_for_row_in_list_table('1: Comprar feijão')
         self.check_for_row_in_list_table('2: Cozinhar o feijão')
 
-        # Maria pensa como o site irá lembrar da sua lista. Aí,
-        # ela vê que o site criou uma URL única para ela -- há
-        # algum texto explicativo para isso.
-        self.fail('Finish the test!')
+        # Um novo usuário, João, dá uma olhada no site.
 
+        ## Vamos utilizar uma nova sessão no navegador para ter
+        ## certeza que nenhuma informação da Maria apareça para
+        ## o João
+        self.browser.quit()
+        self.browser = webdriver.Firefox()
 
-        # Ela vista a URL - sua lista de tarefas ainda está lá.
+        # João visita a home page. Não há nenhum sinal da lista da
+        # Maria
+        self.browser.get(self.live_server_url)
+        page_text = self.browser.find_element_by_tag_name('body').text
+        self.assertNotIn('Comprar feijão', page_text)
+        self.assertNotIn('Cozinhar o feijão', page_text)
+
+        # João começa uma nova lista adicionando um novo item.
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('Comprar leite')
+        input.send_keys(Keys.ENTER)
+
+        # João pega sua URL única
+        joao_list_url = self.browser.current_url
+        self.assertRegex(joao_list_url, '/lists/.+')
+        self.assertNotEqual(joao_list_url, maria_list_url)
+
+        # Novamente, não há nenhum traço da lista da Maria
+        page_text = self.browser.find_element_by_tag_name('body').text
+        self.assertNotIn('Comprar feijão', page_text)
+        self.assertNotIn('Cozinhar o feijão', page_text)
+        self.assertIn('Comprar leite', page_text)
+
 
     def tearDown(self):
-        # Satisfeita, ela desliga o computador.
+        # Satisfeitos, ambos vão dormir
         self.browser.quit()
