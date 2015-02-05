@@ -6,6 +6,7 @@ from django.http import HttpRequest
 from lists.models import Item, List
 from lists.views import home_page
 
+
 class HomePageTest(TestCase):
 
     def test_root_url_resolves_to_home_page_view(self):
@@ -24,12 +25,12 @@ class ListAndItemModelTest(TestCase):
     def test_saving_and_retrieving_items(self):
         list_ = List()
         list_.save()
-        
+
         first_item = Item()
         first_item.text = 'The first (ever) list item'
         first_item.list = list_
         first_item.save()
-        
+
         second_item = Item()
         second_item.text = 'Item the second'
         second_item.list = list_
@@ -59,6 +60,7 @@ class ListViewTest(TestCase):
         correct_list = List.objects.create()
         Item.objects.create(text='itemey 1', list=correct_list)
         Item.objects.create(text='itemey 2', list=correct_list)
+
         other_list = List.objects.create()
         Item.objects.create(text='other list item 1', list=other_list)
         Item.objects.create(text='other list item 2', list=other_list)
