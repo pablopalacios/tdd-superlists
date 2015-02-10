@@ -1,0 +1,27 @@
+Provisioning a new site
+=======================
+
+* Required packages in archlinux:
+
+** nginx
+** python 3
+** git
+** pip
+** virtualenv
+*** Arch Linux:
+    sudo pacman -S python python-pip nginx git
+    sudo pip install virtualenv
+* Nginx block server config
+** see nginx.template.conf
+** replace SITENAME with, eg, staging.my-domain.com
+* systemd unit
+** see gunicorn-systemd.template.service
+** see gunicorn-systemd.template.socket
+** replace SITENAME with, eg, staging.my-domain.com
+* Directory tree
+/home/pablo/
+public_html/SITENAME/
+├── database
+├── source
+├── static
+└── venv
