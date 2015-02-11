@@ -20,7 +20,7 @@ class ItemValidationTest(FunctionalTest):
         self.check_for_row_in_list_table('1: Comprar leite')
 
         # Perversa, ela tenta submeter mais um item em branco na lista
-        self.browser.find_element_by_id('id_new_item').send_keys('Comprar leite\n')
+        self.browser.find_element_by_id('id_new_item').send_keys('\n')
 
         # Ela recebe uma mensagem similar na página da lista
         self.check_for_row_in_list_table('1: Comprar leite')
